@@ -14,12 +14,19 @@ import {
 import { Input, InputField } from "@/components/ui/input"
 import { VStack } from "@/components/ui/vstack"
 import React from "react"
+import { authContext } from '@/context/AuthContext';
 export default function Login() {
+    const { login } = React.useContext(authContext);
     const [errorMessage, setErrorMessage] = React.useState("")
     const [password, setPassword] = React.useState("")
     const [email, setEmail] = React.useState("")
-    const handleSubmit = () => {
-        validateForm()
+    const handleSubmit = async () => {
+        if (!validateForm()) return;
+        try {
+            await login(email, password);
+        } catch (e) {
+            setErrorMessage('Error en login');
+        }
     }
     const validateForm = () => {
         if (email.length === 0) {

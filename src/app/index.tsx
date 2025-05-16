@@ -1,17 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Header from "../layout/Header";
 import Login from "@/modules/user/Login";
-
+import Home from "@/modules/book/Home";
+import { useAuth } from "../context/AuthContext"; // o donde tengas tu contexto
+import { useRouter } from "expo-router";
 export default function Page() {
-  return (
-    <View className="flex flex-1">
-      {/* <Header /> */}
-      <Content />
-      <Footer />
+  const { user, loading, isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading) {
+      if (isAuthenticated) {
+        // Usuario autenticado: redirigir a home
+        router.replace('/home');
+      }
+      // Si no está autenticado, no redirige, muestra Login
+    }
+  }, [isAuthenticated, loading]);
+
+  if (loading) {
+    // Opcional: pantalla de carga mientras verifica token
+    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      {/* Aquí puedes poner un ActivityIndicator */}
     </View>
-  );
+  }
+
+  // Si no autenticado, muestra login
+  return <Content />;
 }
 
 function Content() {
@@ -24,7 +40,7 @@ function Content() {
               role="heading"
               className="text-3xl font-bold tracking-tighter text-center native:text-5xl sm:text-4xl md:text-5xl lg:text-6xl"
             >
-              Welcome to Project ACME
+              Bookedge
             </Text>
             <Text className="mx-auto max-w-[700px] text-lg text-center text-gray-500 md:text-xl dark:text-gray-400">
               Discover and collaborate on acme. Explore our services now.

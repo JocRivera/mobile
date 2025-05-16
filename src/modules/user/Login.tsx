@@ -79,12 +79,12 @@ export default function Login() {
                     </FormControlHelper>
                     <FormControlError>
                         <FormControlErrorIcon as={AlertCircleIcon} />
-                        <FormControlErrorText>
+                        <FormControlErrorText className='ml-1'>
                             {errorMessage}
                         </FormControlErrorText>
                     </FormControlError>
                 </FormControl>
-                <Button className="self-end mt-4 w-fit" size="sm" onPress={handleSubmit} >
+                <Button className="self-end mt-4 rounded-md w-fit" size="sm" onPress={handleSubmit} >
                     <ButtonText>Submit</ButtonText>
                 </Button>
             </VStack>

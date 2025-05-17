@@ -15,9 +15,9 @@ export const AuthProvider = ({ children }) => {
         try {
             setError(null);
             const response = await authService.login(email, password);
-            setUser(response.data); // guarda usuario completo
+            setUser(response.user); // guarda usuario completo
             setIsAuthenticated(true);
-            await AsyncStorage.setItem('user', JSON.stringify(response.data)); // guarda usuario
+            await AsyncStorage.setItem('user', JSON.stringify(response.user)); // guarda usuario
         } catch (error) {
             setError('Login failed');
             throw error;

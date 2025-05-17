@@ -12,10 +12,9 @@ export default function Page() {
   useEffect(() => {
     if (!loading) {
       if (isAuthenticated) {
-        // Usuario autenticado: redirigir a home
+        console.log('User authenticated:', user);
         router.replace('/home');
       }
-      // Si no está autenticado, no redirige, muestra Login
     }
   }, [isAuthenticated, loading]);
 

@@ -5,7 +5,8 @@ const API_URL = 'http://localhost:3000';
 class AuthService {
     async login(email: string, password: string) {
         try {
-            const response = await axios.post(`${API_URL}/login`, { email, password });
+            const response = await axios.post(`${API_URL}/auth/login`, { email, password });
+            console.log('Login response:', response.data);
             return response.data;
         } catch (error) {
             throw new Error('Login failed');

@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {
         const checkToken = async () => {
             try {
                 const token = await AsyncStorage.getItem('userToken');
+                console.log('Token from storage:', token);
                 if (token) {
                     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                     setUser({ token });

@@ -79,11 +79,6 @@ export default function Login() {
                             onChangeText={(text) => setPassword(text)}
                         />
                     </Input>
-                    <FormControlHelper>
-                        <FormControlHelperText>
-                            Must be atleast 6 characters.
-                        </FormControlHelperText>
-                    </FormControlHelper>
                     <FormControlError>
                         <FormControlErrorIcon as={AlertCircleIcon} />
                         <FormControlErrorText className='ml-1'>

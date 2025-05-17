@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { authService } from '../services/AuthService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 
 export const authContext = createContext(null);
 export const useAuth = () => useContext(authContext);
@@ -12,60 +11,42 @@ export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const checkToken = async () => {
-            try {
-                const token = await AsyncStorage.getItem('userToken');
-                console.log('Token from storage:', token);
-                if (token) {
-                    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                    setUser({ token });
-                    setIsAuthenticated(true);
-                }
-            } catch (error) {
-                console.error('Error checking token', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        checkToken();
-    }, []);
-
     const login = async (email, password) => {
         try {
             setError(null);
             const response = await authService.login(email, password);
-            setUser(response.data);
+            setUser(response.data); // guarda usuario completo
             setIsAuthenticated(true);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-            await AsyncStorage.setItem('userToken', response.data.token);
+            await AsyncStorage.setItem('user', JSON.stringify(response.data)); // guarda usuario
         } catch (error) {
             setError('Login failed');
             throw error;
         }
     };
 
-    const register = async (email, password) => {
-        try {
-            setError(null);
-            const response = await authService.register(email, password);
-            setUser(response.data);
-            setIsAuthenticated(true);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-            await AsyncStorage.setItem('userToken', response.data.token);
-        } catch (error) {
-            setError('Registration failed');
-            throw error;
-        }
-    };
+    useEffect(() => {
+        const checkUser = async () => {
+            try {
+                const userString = await AsyncStorage.getItem('user');
+                if (userString) {
+                    setUser(JSON.parse(userString));
+                    setIsAuthenticated(true);
+                }
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        checkUser();
+    }, []);
 
     const logout = async () => {
         try {
             await authService.logout();
             setUser(null);
             setIsAuthenticated(false);
-            delete axios.defaults.headers.common['Authorization'];
-            await AsyncStorage.removeItem('userToken');
+            await AsyncStorage.removeItem('user'); // corregido aquí
         } catch (error) {
             setError('Logout failed');
             throw error;
@@ -73,7 +54,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <authContext.Provider value={{ user, loading, login, register, logout, isAuthenticated, error }}>
+        <authContext.Provider value={{ user, loading, login, logout, isAuthenticated, error }}>
             {children}
         </authContext.Provider>
     );

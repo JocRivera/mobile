@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Login from "@/modules/user/Login";
-import Home from "@/modules/book/Home";
 import { useAuth } from "../context/AuthContext"; // o donde tengas tu contexto
 import { useRouter } from "expo-router";
 export default function Page() {
@@ -18,7 +17,12 @@ export default function Page() {
     }
   }, [isAuthenticated, loading]);
   // Si no autenticado, muestra login
-  return <Content />;
+  return (
+    <View className="flex-1">
+      <Content />
+      <Footer />
+    </View>
+  );
 }
 
 function Content() {

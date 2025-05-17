@@ -12,7 +12,7 @@ export default function SearchComponent() {
         console.log("Buscando:", search);
     };
     return (
-        <View className="flex flex-row items-center justify-between px-4 py-2 bg-white border-b border-gray-200">
+        <View className="flex flex-row items-center justify-between px-4 py-1 bg-white border-gray-200">
             <Input
                 className="flex-1 p-1 rounded-md">
                 <InputField

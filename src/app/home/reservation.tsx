@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import SearchComponent from "@/components/Search";
 import Filter from "@/components/Filter";
+import Group from "@/components/Group";
 export default function Reservation() {
     const { loading, isAuthenticated } = useAuth();
     const router = useRouter();
@@ -14,11 +15,12 @@ export default function Reservation() {
     }, [loading, isAuthenticated]);
     return (
         <View className="flex flex-1 ">
-            <View className="mx-w-[700px] mx-h-[700px] bg-white rounded-lg shadow-md p-4">
+            <View className="mx-w-[700px] mx-h-[700px] bg-white rounded-lg shadow-md p-4 z-10">
                 <SearchComponent />
             </View>
-            <View className="flex-1 px-4 py-6 md:px-6 ">
+            <View className="items-center justify-center px-4 py-2 bg-white border-b border-gray-200 ">
                 <Filter />
+                <Group />
             </View>
         </View>
     );

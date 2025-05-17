@@ -4,19 +4,17 @@ import { View } from 'react-native'; // Importa View si aún no lo has hecho
 
 export default function Filter() {
     return (
-        <Select>
+        <Select >
             <SelectTrigger
                 className="rounded-md border border-gray-300 py-2.5 px-3 flex-row items-center justify-between"
                 size="xl"
             >
                 <SelectInput placeholder="Estado" />
-                <View className="ml-2"> {/* Ajusta el margen izquierdo del icono */}
-                    <ChevronDownIcon />
-                </View>
+                <ChevronDownIcon />
             </SelectTrigger>
             <SelectPortal>
                 <SelectBackdrop />
-                <SelectContent>
+                <SelectContent >
                     <SelectDragIndicatorWrapper>
                         <SelectDragIndicator />
                     </SelectDragIndicatorWrapper>

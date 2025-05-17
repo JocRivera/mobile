@@ -5,6 +5,7 @@ import { Icon } from '@/components/ui/icon';
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react-native';
 import { Calendar, Eye } from 'lucide-react-native';
 import { View } from 'react-native';
+import DetailPop from './DetailPop';
 
 interface Reserva {
     id: string;
@@ -85,13 +86,8 @@ export default function ReservasPorEstadoAccordion() {
                                     >
                                         {/* Barra lateral color al inicio */}
                                         <View className={`${colorEstado(reserva.estado)} w-2 h-full rounded-md mr-3`} />
-                                        <TouchableOpacity
-                                            onPress={() => handleDetail(reserva.id)}
-                                            className="mr-3"
-                                            accessibilityLabel="Ver detalle"
-                                        >
-                                            <Icon as={Eye} size="md" />
-                                        </TouchableOpacity>
+                                        <DetailPop reserva={reservas} />
+
                                         {/* Contenido info reserva alineado a la derecha */}
                                         <View className="flex flex-col items-end flex-1">
                                             <Text className="text-base font-semibold">{reserva.cliente}</Text>

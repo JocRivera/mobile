@@ -1,36 +1,63 @@
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Icon } from '@/components/ui/icon';
-import { Eye } from 'lucide-react-native';
-import { Button, ButtonText } from "@/components/ui/button";
+import { Eye, Calendar, MapPin, User, X } from 'lucide-react-native';
 import {
     Popover,
     PopoverBackdrop,
     PopoverArrow,
     PopoverBody,
     PopoverContent,
-    PopoverTrigger
+    PopoverHeader,
+    PopoverCloseButton
 } from "@/components/ui/popover";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 import React from "react";
 
-export default function DetailPop({ reserva }: { reserva: any }) {
+// Define the type for a reservation
+interface Reserva {
+    id: string;
+    plan: string;
+    alojamiento: string;
+    cliente: string;
+    fechaInicio: string;
+    fechaFin: string;
+    estado: string;
+}
+
+export default function DetailPop({ reserva }: { reserva: Reserva }) {
     const [isOpen, setIsOpen] = React.useState(false);
 
-    const handleDetail = (id: string) => {
-        // Aquí puedes manejar la navegación a la pantalla de detalle de la reserva
-        console.log(`Navegar a detalle de reserva con ID: ${id}`);
-    }
+    const handleOpen = () => {
+        setIsOpen(true);
+    };
+
+    const handleClose = () => {
+        setIsOpen(false);
+    };
+
+    const statusColors = {
+        'Confirmada': 'text-green-500',
+        'Pendiente': 'text-yellow-500',
+        'Cancelada': 'text-red-500',
+        'default': 'text-gray-500'
+    };
+
+    const getStatusColor = (estado: string) => {
+        return statusColors[estado as keyof typeof statusColors] || statusColors.default;
+    };
 
     return (
         <Popover
+            isOpen={isOpen}
+            onClose={handleClose}
+            onOpen={handleOpen}
+            placement="bottom left"
+            size="lg"
             trigger={(triggerProps) => {
                 return (
                     <TouchableOpacity
                         {...triggerProps}
-                        onPress={() => {
-                            handleDetail(reserva.id);
-                            setIsOpen(true);
-                        }}
+                        onPress={handleOpen}
                         className="mr-3"
                         accessibilityLabel="Ver detalle"
                     >
@@ -38,19 +65,49 @@ export default function DetailPop({ reserva }: { reserva: any }) {
                     </TouchableOpacity>
                 );
             }}
-            isOpen={isOpen}
-            onClose={() => setIsOpen(false)}
-            placement="bottom"
-            size="md"
         >
-            <PopoverContent>
-                <PopoverBackdrop />
+            <PopoverBackdrop />
+            <PopoverContent className="bg-white rounded-lg">
                 <PopoverArrow />
-                <PopoverBody>
-                    <Text className="text-typography-900">
-                        Alex, Annie and many others are already enjoying the Pro features,
-                        don't miss out on the fun!
-                    </Text>
+                <PopoverHeader className="flex-row items-center justify-between p-3 border-b border-gray-200">
+                    <Text className="text-lg font-bold text-typography-900">Detalles de Reserva</Text>
+                    <TouchableOpacity onPress={handleClose}>
+                        <Icon as={X} size="sm" />
+                    </TouchableOpacity>
+                </PopoverHeader>
+                <PopoverBody className="p-4">
+                    <View className="space-y-3">
+                        {/* Estado con color */}
+                        <View className="flex-row items-center justify-between">
+                            <Text className={`font-bold ${getStatusColor(reserva.estado)}`}>
+                                {reserva.estado}
+                            </Text>
+                        </View>
+
+                        {/* Cliente */}
+                        <View className="flex-row items-center">
+                            <Icon as={User} size="sm" className="mr-2 text-gray-600" />
+                            <Text className="flex-1 text-typography-900">{reserva.cliente}</Text>
+                        </View>
+
+                        {/* Alojamiento */}
+                        <View className="flex-row items-center">
+                            <Text className="flex-1 text-typography-900">{reserva.alojamiento}</Text>
+                        </View>
+
+                        {/* Plan */}
+                        <View className="flex-row items-center justify-between">
+                            <Text className="font-medium text-typography-700">{reserva.plan}</Text>
+                        </View>
+
+                        {/* Fechas */}
+                        <View className="flex-row items-center">
+                            <Icon as={Calendar} size="sm" className="mr-2 text-gray-600" />
+                            <Text className="flex-1 text-typography-900">
+                                {reserva.fechaInicio} - {reserva.fechaFin}
+                            </Text>
+                        </View>
+                    </View>
                 </PopoverBody>
             </PopoverContent>
         </Popover>

@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Box } from '@/components/ui/box';
 import { Icon } from '@/components/ui/icon';
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react-native';
-import { Calendar, Eye } from 'lucide-react-native';
+import { Calendar } from 'lucide-react-native';
 import { View } from 'react-native';
 import DetailPop from './DetailPop';
 
@@ -16,6 +17,7 @@ interface Reserva {
     fechaFin: string;
     estado: string;
 }
+
 const colorEstado = (estado: string) => {
     switch (estado) {
         case 'Confirmada': return 'bg-green-500';
@@ -24,6 +26,7 @@ const colorEstado = (estado: string) => {
         default: return 'bg-gray-400';
     }
 };
+
 const reservas: Reserva[] = [
     { id: '1', plan: 'Plan 1', alojamiento: 'Alojamiento 1', cliente: 'Jose manuel Rivera', fechaInicio: 'Dic 24', fechaFin: 'Dic 31, 2025', estado: 'Confirmada' },
     { id: '2', plan: 'Plan 2', alojamiento: 'Alojamiento 2', cliente: 'Maria Fernanda Lopez', fechaInicio: '2023-10-06', fechaFin: '2023-10-10', estado: 'Pendiente' },
@@ -34,14 +37,9 @@ const reservas: Reserva[] = [
 // Extraemos estados únicos
 const estadosUnicos = Array.from(new Set(reservas.map(r => r.estado)));
 
-export default function ReservasPorEstadoAccordion() {
+export default function Group() {
     // Estado que guarda qué estados están expandidos (true = abierto)
     const [estadosAbiertos, setEstadosAbiertos] = useState<Record<string, boolean>>({});
-
-    const handleDetail = (id: string) => {
-        // Aquí puedes manejar la navegación a la pantalla de detalle de la reserva
-        console.log(`Navegar a detalle de reserva con ID: ${id}`);
-    }
 
     const toggleEstado = (estado: string) => {
         setEstadosAbiertos((prev) => ({
@@ -86,7 +84,9 @@ export default function ReservasPorEstadoAccordion() {
                                     >
                                         {/* Barra lateral color al inicio */}
                                         <View className={`${colorEstado(reserva.estado)} w-2 h-full rounded-md mr-3`} />
-                                        <DetailPop reserva={reservas} />
+
+                                        {/* Now passing the individual reserva object correctly */}
+                                        <DetailPop reserva={reserva} />
 
                                         {/* Contenido info reserva alineado a la derecha */}
                                         <View className="flex flex-col items-end flex-1">
@@ -98,7 +98,6 @@ export default function ReservasPorEstadoAccordion() {
                                             </View>
                                         </View>
                                     </Box>
-
                                 ))}
                             </Box>
                         )}

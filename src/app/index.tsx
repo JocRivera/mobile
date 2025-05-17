@@ -12,7 +12,7 @@ export default function Page() {
     if (!loading) {
       if (isAuthenticated) {
         console.log('User authenticated:', user);
-        router.replace('/home');
+        router.replace('/(home)/accomodation');
       }
     }
   }, [isAuthenticated, loading]);

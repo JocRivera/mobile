@@ -9,8 +9,8 @@ export default function HomeLayout() {
                 headerShown: false,
             }}
         >
-            <Tabs.Screen name="index" options={{ title: 'Inicio' }} />
-            <Tabs.Screen name="profile" options={{ title: 'Perfil' }} />
+            <Tabs.Screen name="reservation" options={{ title: 'Reservas' }} />
+            <Tabs.Screen name="accomodation" options={{ title: 'Alojamientos' }} />
         </Tabs>
     );
 }

@@ -12,7 +12,7 @@ export default function Page() {
     if (!loading) {
       if (isAuthenticated) {
         console.log('User authenticated:', user);
-        router.replace('/(home)/accomodation');
+        router.replace('/home/reservation');
       }
     }
   }, [isAuthenticated, loading]);

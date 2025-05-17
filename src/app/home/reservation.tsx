@@ -18,8 +18,10 @@ export default function Reservation() {
             <View className="mx-w-[700px] mx-h-[700px] bg-white rounded-lg shadow-md p-4 z-10">
                 <SearchComponent />
             </View>
-            <View className="items-center justify-center px-4 py-2 bg-white border-b border-gray-200 ">
+            <View className="items-center justify-center px-4 py-2 bg-white ">
                 <Filter />
+            </View>
+            <View>
                 <Group />
             </View>
         </View>

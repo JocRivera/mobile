@@ -3,6 +3,8 @@ import { Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Box } from '@/components/ui/box';
 import { Icon } from '@/components/ui/icon';
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react-native';
+import { Calendar, Eye } from 'lucide-react-native';
+import { View } from 'react-native';
 
 interface Reserva {
     id: string;
@@ -13,12 +15,19 @@ interface Reserva {
     fechaFin: string;
     estado: string;
 }
-
+const colorEstado = (estado: string) => {
+    switch (estado) {
+        case 'Confirmada': return 'bg-green-500';
+        case 'Pendiente': return 'bg-yellow-400';
+        case 'Cancelada': return 'bg-red-500';
+        default: return 'bg-gray-400';
+    }
+};
 const reservas: Reserva[] = [
-    { id: '1', plan: 'Plan 1', alojamiento: 'Alojamiento 1', cliente: 'Cliente 1', fechaInicio: '2023-10-01', fechaFin: '2023-10-05', estado: 'Confirmada' },
-    { id: '2', plan: 'Plan 2', alojamiento: 'Alojamiento 2', cliente: 'Cliente 2', fechaInicio: '2023-10-06', fechaFin: '2023-10-10', estado: 'Pendiente' },
-    { id: '3', plan: 'Plan 3', alojamiento: 'Alojamiento 3', cliente: 'Cliente 3', fechaInicio: '2023-10-11', fechaFin: '2023-10-15', estado: 'Cancelada' },
-    { id: '4', plan: 'Plan 4', alojamiento: 'Alojamiento 4', cliente: 'Cliente 4', fechaInicio: '2023-10-16', fechaFin: '2023-10-20', estado: 'Confirmada' },
+    { id: '1', plan: 'Plan 1', alojamiento: 'Alojamiento 1', cliente: 'Jose manuel Rivera', fechaInicio: 'Dic 24', fechaFin: 'Dic 31, 2025', estado: 'Confirmada' },
+    { id: '2', plan: 'Plan 2', alojamiento: 'Alojamiento 2', cliente: 'Maria Fernanda Lopez', fechaInicio: '2023-10-06', fechaFin: '2023-10-10', estado: 'Pendiente' },
+    { id: '3', plan: 'Plan 3', alojamiento: 'Alojamiento 3', cliente: 'Pastora Nube', fechaInicio: '2023-10-11', fechaFin: '2023-10-15', estado: 'Cancelada' },
+    { id: '4', plan: 'Plan 4', alojamiento: 'Alojamiento 4', cliente: 'Me Quiero Matar', fechaInicio: '2023-10-16', fechaFin: '2023-10-20', estado: 'Confirmada' },
 ];
 
 // Extraemos estados únicos
@@ -27,6 +36,11 @@ const estadosUnicos = Array.from(new Set(reservas.map(r => r.estado)));
 export default function ReservasPorEstadoAccordion() {
     // Estado que guarda qué estados están expandidos (true = abierto)
     const [estadosAbiertos, setEstadosAbiertos] = useState<Record<string, boolean>>({});
+
+    const handleDetail = (id: string) => {
+        // Aquí puedes manejar la navegación a la pantalla de detalle de la reserva
+        console.log(`Navegar a detalle de reserva con ID: ${id}`);
+    }
 
     const toggleEstado = (estado: string) => {
         setEstadosAbiertos((prev) => ({
@@ -67,14 +81,28 @@ export default function ReservasPorEstadoAccordion() {
                                 {reservasFiltradas.map((reserva) => (
                                     <Box
                                         key={reserva.id}
-                                        className="p-3 mb-4 border rounded bg-gray-50"
+                                        className="flex flex-row items-center p-3 mb-4 border rounded bg-gray-50"
                                     >
-                                        <Text className="text-base font-semibold">{reserva.cliente}</Text>
-                                        <Text>Plan: {reserva.plan}</Text>
-                                        <Text>Alojamiento: {reserva.alojamiento}</Text>
-                                        <Text>Fecha: {reserva.fechaInicio} - {reserva.fechaFin}</Text>
-                                        <Text className="font-medium text-blue-600">Estado: {reserva.estado}</Text>
+                                        {/* Barra lateral color al inicio */}
+                                        <View className={`${colorEstado(reserva.estado)} w-2 h-full rounded-md mr-3`} />
+                                        <TouchableOpacity
+                                            onPress={() => handleDetail(reserva.id)}
+                                            className="mr-3"
+                                            accessibilityLabel="Ver detalle"
+                                        >
+                                            <Icon as={Eye} size="md" />
+                                        </TouchableOpacity>
+                                        {/* Contenido info reserva alineado a la derecha */}
+                                        <View className="flex flex-col items-end flex-1">
+                                            <Text className="text-base font-semibold">{reserva.cliente}</Text>
+                                            <Text>{reserva.alojamiento}</Text>
+                                            <View className="flex-row items-center">
+                                                <Icon as={Calendar} className="mr-2" />
+                                                <Text>{reserva.fechaInicio} - {reserva.fechaFin}</Text>
+                                            </View>
+                                        </View>
                                     </Box>
+
                                 ))}
                             </Box>
                         )}

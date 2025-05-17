@@ -1,9 +1,10 @@
 import { View } from "react-native";
 import { Text } from "react-native";
+import Header from "@/layout/Header";
 export default function Home() {
     return (
-        <View className="items-center justify-center flex-1">
-            <Text className="text-2xl font-bold">Home</Text>
+        <View >
+            <Header />
         </View>
     );
 }

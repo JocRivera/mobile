@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Text, View, ScrollView } from "react-native";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
@@ -14,13 +14,15 @@ export default function Reservation() {
         }
     }, [loading, isAuthenticated]);
     return (
-        <View className="flex flex-1 ">
-            <View className="mx-w-[700px] mx-h-[700px] bg-white rounded-lg shadow-md p-4 z-10">
-                <SearchComponent />
+        <ScrollView>
+            <View className="flex flex-1 ">
+                <View className="mx-w-[700px] mx-h-[700px] bg-white rounded-lg shadow-md p-4 z-10">
+                    <SearchComponent />
+                </View>
+                <View>
+                    <Group />
+                </View>
             </View>
-            <View>
-                <Group />
-            </View>
-        </View>
+        </ScrollView>
     );
 }

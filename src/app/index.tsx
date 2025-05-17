@@ -17,14 +17,6 @@ export default function Page() {
       }
     }
   }, [isAuthenticated, loading]);
-
-  if (loading) {
-    // Opcional: pantalla de carga mientras verifica token
-    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      {/* Aquí puedes poner un ActivityIndicator */}
-    </View>
-  }
-
   // Si no autenticado, muestra login
   return <Content />;
 }
